@@ -53,7 +53,7 @@
 
 </template>
 <script>
-  import {queryTreeListForRole,queryRolePermission,saveRolePermission} from '@/api/api'
+  import {getRoleMenusByRoleID,saveRolePermission} from '@/api/api'
   import RoleDataruleModal from './RoleDataruleModal.vue'
 
   export default {
@@ -64,6 +64,7 @@
     data(){
       return {
         roleId:"",
+        roleCode:"",
         treeData: [],
         defaultCheckedKeys:[],
         checkedKeys:[],
@@ -87,7 +88,8 @@
           this.checkedKeys = o
         }
       },
-      show(roleId){
+      show(roleId,roleCode){
+        this.roleCode=roleCode
         this.roleId=roleId
         this.visible = true;
       },
@@ -100,26 +102,26 @@
         this.expandedKeysss = expandedKeys;
         this.autoExpandParent = false
       },
-      reset () {
+      reset () { //重置
         this.expandedKeysss = []
         this.checkedKeys = []
         this.defaultCheckedKeys = []
         this.loading = false
       },
-      expandAll () {
+      expandAll () { //展开所有
         this.expandedKeysss = this.allTreeKeys
       },
-      closeAll () {
+      closeAll () { //关闭所有
         this.expandedKeysss = []
       },
-      checkALL () {
+      checkALL () { //选中全部
         this.checkedKeys = this.allTreeKeys
       },
-      cancelCheckALL () {
+      cancelCheckALL () { //取消全部
         //this.checkedKeys = this.defaultCheckedKeys
         this.checkedKeys = []
       },
-      switchCheckStrictly (v) {
+      switchCheckStrictly (v) { //是否关联父级
         if(v==1){
           this.checkStrictly = false
         }else if(v==2){
@@ -133,6 +135,7 @@
         let that = this;
         let params =  {
           roleId:that.roleId,
+          roleCode:that.roleCode,
           permissionIds:that.checkedKeys.join(","),
           lastpermissionIds:that.defaultCheckedKeys.join(","),
         };
@@ -154,15 +157,12 @@
   watch: {
     visible () {
       if (this.visible) {
-        queryTreeListForRole().then((res) => {
-          this.treeData = res.result.treeList
+        getRoleMenusByRoleID({id:this.roleId}).then((res) => {
+          this.treeData = res.result.roleAllTrees
           this.allTreeKeys = res.result.ids
-          queryRolePermission({roleId:this.roleId}).then((res)=>{
-              this.checkedKeys = [...res.result];
-              this.defaultCheckedKeys = [...res.result];
-              this.expandedKeysss = this.allTreeKeys;
-              //console.log(this.defaultCheckedKeys)
-          })
+          this.checkedKeys = res.result.roleUUIDList
+          this.defaultCheckedKeys = res.result.roleUUIDList
+          this.expandedKeysss = this.allTreeKeys;
         })
       }
     }

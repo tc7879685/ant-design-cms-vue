@@ -70,8 +70,8 @@ const user = {
           const authData = response.result.auth;
           const allAuthData = response.result.allAuth;
           //Vue.ls.set(USER_AUTH,authData);
-          sessionStorage.setItem(USER_AUTH,JSON.stringify(authData));
-          sessionStorage.setItem(SYS_BUTTON_AUTH,JSON.stringify(allAuthData));
+          sessionStorage.setItem(USER_AUTH,JSON.stringify([{action:"user:add",type:'1'}]));
+          sessionStorage.setItem(SYS_BUTTON_AUTH,JSON.stringify([{action:"user:add",type:'1'}]));
           let newMenu =  makeRoutesSafe(menuData)
           if (menuData && menuData.length > 0) {
             commit('SET_PERMISSIONLIST', newMenu);

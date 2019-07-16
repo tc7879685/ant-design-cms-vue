@@ -233,7 +233,7 @@
             dv.transform({
               type: 'fold',
               fields: ['个人', '团队', '部门'],
-              key: 'user',
+              key: 'index.vue',
               value: 'score'
             })
 

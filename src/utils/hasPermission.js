@@ -70,7 +70,7 @@ export function filterGlobalPermission(el, binding, vnode) {
   var allPermissionList = [];
 
   //let authList = Vue.ls.get(USER_AUTH);
-  let authList = JSON.parse(sessionStorage.getItem(USER_AUTH) || "[]");
+  let authList =  JSON.parse(sessionStorage.getItem(USER_AUTH) || "[]");
   for (var auth of authList) {
     if(auth.type != '2') {
       permissionList.push(auth);

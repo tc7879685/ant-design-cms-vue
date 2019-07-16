@@ -22,31 +22,48 @@
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
 
-        <a-form-item label="用户账号" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input placeholder="请输入用户账号" v-decorator="[ 'username', validatorRules.username]" :readOnly="!!model.id"/>
+        <a-form-item label="登陆账号" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input placeholder="请输入用户账号" v-decorator="[ 'userCode', validatorRules.userCode]" :readOnly="!!model.id"/>
         </a-form-item>
 
-        <template v-if="!model.id">
-          <a-form-item label="登陆密码" :labelCol="labelCol" :wrapperCol="wrapperCol" >
-            <a-input type="password" placeholder="请输入登陆密码" v-decorator="[ 'password', validatorRules.password]" />
-          </a-form-item>
 
-          <a-form-item label="确认密码" :labelCol="labelCol" :wrapperCol="wrapperCol" >
-            <a-input type="password" @blur="handleConfirmBlur" placeholder="请重新输入登陆密码" v-decorator="[ 'confirmpassword', validatorRules.confirmpassword]"/>
-          </a-form-item>
-        </template>
-
-        <a-form-item label="用户名字" :labelCol="labelCol" :wrapperCol="wrapperCol" >
-          <a-input placeholder="请输入用户名称" v-decorator="[ 'realname', validatorRules.realname]" />
+        <a-form-item label="用户名称" :labelCol="labelCol" :wrapperCol="wrapperCol" >
+          <a-input placeholder="请输入用户名称" v-decorator="[ 'userName', validatorRules.userName]" />
         </a-form-item>
+
+
+        <a-form-item label="职务" :labelCol="labelCol" :wrapperCol="wrapperCol" >
+          <a-input placeholder="请输入用户名称" v-decorator="[ 'userJob', validatorRules.userJob]" />
+        </a-form-item>
+
+
+        <a-form-item label="身份证" :labelCol="labelCol" :wrapperCol="wrapperCol" >
+          <a-input placeholder="请输入用户名称" v-decorator="[ 'userIdCard', validatorRules.userIdCard]" />
+        </a-form-item>
+
+        <a-form-item label="邮箱" :labelCol="labelCol" :wrapperCol="wrapperCol">
+        <a-input placeholder="请输入邮箱" v-decorator="[ 'userEmail', validatorRules.userEmail]" />
+      </a-form-item>
+
+        <a-form-item label="电话" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input placeholder="请输入邮箱" v-decorator="[ 'userPhone', validatorRules.userPhone]" />
+        </a-form-item>
+
+        <a-form-item label="手机" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input placeholder="请输入邮箱" v-decorator="[ 'userMobile', validatorRules.userMobile]" />
+        </a-form-item>
+
+
         <template v-show="!roleDisabled">
         <a-form-item label="角色分配" :labelCol="labelCol" :wrapperCol="wrapperCol" >
           <a-select
             mode="multiple"
             style="width: 100%"
             placeholder="请选择用户角色"
-            v-model="selectedRole">
-            <a-select-option v-for="(role,roleindex) in roleList" :key="roleindex.toString()" :value="role.id">
+            v-model="selectedRole"
+            v-decorator="[ 'roleName', validatorRules.roleName]"
+          >
+            <a-select-option v-for="(role,roleindex) in roleList" :key="roleindex.toString()" :value="role.roleUUID">
               {{ role.roleName }}
             </a-select-option>
           </a-select>
@@ -56,6 +73,7 @@
         <template v-show="!departDisabled">
         <a-form-item   label="部门分配" :labelCol="labelCol" :wrapperCol="wrapperCol" >
           <a-input-search
+            v-decorator="[ 'unitUUID', validatorRules.unitUUID]"
             placeholder="点击右侧按钮选择部门"
             v-model="checkedDepartNameString"
             disabled
@@ -83,31 +101,9 @@
           </a-upload>
         </a-form-item>
 
-        <a-form-item label="生日" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-date-picker
-            style="width: 100%"
-            placeholder="请选择生日"
-            v-decorator="['birthday', {initialValue:!model.birthday?null:moment(model.birthday,dateFormat)}]"/>
-        </a-form-item>
-
-        <a-form-item label="性别" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-select v-decorator="[ 'sex', {}]" placeholder="请选择性别">
-            <a-select-option :value="1">男</a-select-option>
-            <a-select-option :value="2">女</a-select-option>
-          </a-select>
-        </a-form-item>
-
-        <a-form-item label="邮箱" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input placeholder="请输入邮箱" v-decorator="[ 'email', validatorRules.email]" />
-        </a-form-item>
-
-        <a-form-item label="手机号码" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input placeholder="请输入手机号码" :disabled="disabledAuth('user:form:phone')" v-decorator="[ 'phone', validatorRules.phone]" />
-        </a-form-item>
-
-        <a-form-item label="工作流引擎" :labelCol="labelCol" :wrapperCol="wrapperCol">
+       <!-- <a-form-item label="工作流引擎" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <j-dict-select-tag  v-decorator="['activitiSync', {}]" placeholder="请选择是否同步工作流引擎" :type="'radio'" :triggerChange="true" dictCode="activiti_sync"/>
-        </a-form-item>
+        </a-form-item>-->
 
       </a-form>
     </a-spin>
@@ -157,30 +153,18 @@
         userDepartModel:{userId:'',departIdList:[]}, // 保存SysUserDepart的用户部门中间表数据需要的对象
         dateFormat:"YYYY-MM-DD",
         validatorRules:{
-          username:{
+          userCode:{
             rules: [{
               required: true, message: '请输入用户账号!'
             },{
               validator: this.validateUsername,
             }]
           },
-          password:{
-            rules: [{
-              required: true, message: '请输入密码!',
-            }, {
-              validator: this.validateToNextPassword,
-            }],
-          },
-          confirmpassword:{
-            rules: [{
-              required: true, message: '请重新输入登陆密码!',
-            }, {
-              validator: this.compareToFirstPassword,
-            }],
-          },
-          realname:{rules: [{ required: true, message: '请输入用户名称!' }]},
-          phone:{rules: [{validator: this.validatePhone}]},
-          email:{rules: [{type: 'email', message: '请输入正确格式的电子邮箱!',}]},
+          userName:{rules: [{ required: true, message: '请输入用户名称!' }]},
+          unitUUID:{rules: [{ required: true, message: '请选择单位!' }]},
+          roleName:{rules: [{ required: true, message: '请选择角色!' }]},
+         /* userEmail:{rules: [{validator: this.validatePhone}]},*/
+          userEmail:{rules: [{required: true,type: 'email', message: '请输入正确格式的电子邮箱!',}]},
           roles:{}
           //  sex:{initialValue:((!this.model.sex)?"": (this.model.sex+""))}
         },
@@ -280,7 +264,7 @@
         that.visible = true;
         that.model = Object.assign({}, record);
         that.$nextTick(() => {
-          that.form.setFieldsValue(pick(this.model,'username','sex','realname','email','phone','activitiSync'))
+          that.form.setFieldsValue(pick(this.model,'userCode','userName','realname','email','phone','activitiSync'))
         });
         // 调用查询用户对应的部门信息的方法
         that.checkedDepartKeys = [];
@@ -288,7 +272,7 @@
       },
       //
       loadCheckedDeparts(){
-        let that = this;
+        /*let that = this;
         if(!that.userId){return}
         getAction(that.url.userWithDepart,{userId:that.userId}).then((res)=>{
           that.checkedDepartNames = [];
@@ -301,7 +285,7 @@
           }else{
             console.log(res.message);
           }
-        })
+        })*/
       },
       close () {
         this.$emit('close');
@@ -566,7 +550,7 @@
       },
       // 搜索用户对应的部门API
       onSearch(){
-        this.$refs.departWindow.add(this.checkedDepartKeys,this.userId);
+        /*this.$refs.departWindow.add(this.checkedDepartKeys,this.userId);*/
       },
 
       // 获取用户对应部门弹出框提交给返回的数据

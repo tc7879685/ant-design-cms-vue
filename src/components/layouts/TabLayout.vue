@@ -82,7 +82,6 @@
     },
     watch: {
       '$route': function(newRoute) {
-        debugger
         this.activePage = newRoute.fullPath
         if (!this.multipage) {
           this.linkList = [newRoute.fullPath]

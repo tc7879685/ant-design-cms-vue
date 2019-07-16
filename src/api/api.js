@@ -6,18 +6,25 @@ import { getAction,deleteAction,putAction,postAction} from '@/api/manage'
 // const imgView = "http://localhost:8080/jeecg-boot/sys/common/view/";
 
 //角色管理
+export const getRoleInfoList = (params)=>postAction("/sys/role/list",params);//
 const addRole = (params)=>postAction("/sys/role/add",params);
 const editRole = (params)=>putAction("/sys/role/edit",params);
+
+export  const getRoleMenus = (params)=>putAction("/sys/role/queryRoleMenu",params);
+
+const roleInfo = (params)=>putAction("/sys/role/roleInfo",params);
 // const getRoleList = (params)=>getAction("/sys/role/list",params);
 // const deleteRole = (params)=>deleteAction("/sys/role/delete",params);
 // const deleteRoleList = (params)=>deleteAction("/sys/role/deleteBatch",params);
 const checkRoleCode = (params)=>getAction("/sys/role/checkRoleCode",params);
-const queryall = (params)=>getAction("/sys/role/queryall",params);
+const queryall = (params)=>getAction("/sys/role/queryRole",params);
+
+export const getRoleMenusByRoleID = (params)=>postAction("/sys/role/queryRoleMenu",params);//获取角色权限
 
 //用户管理
 const addUser = (params)=>postAction("/sys/user/add",params);
 const editUser = (params)=>putAction("/sys/user/edit",params);
-const queryUserRole = (params)=>getAction("/sys/user/queryUserRole",params);
+const queryUserRole = (params)=>getAction("/sys/role/queryRole",params);
 const getUserList = (params)=>getAction("/sys/user/list",params);
 // const deleteUser = (params)=>deleteAction("/sys/user/delete",params);
 // const deleteUserList = (params)=>deleteAction("/sys/user/deleteBatch",params);
@@ -37,15 +44,15 @@ const queryTreeList = (params)=>getAction("/sys/permission/queryTreeList",params
 const queryTreeListForRole = (params)=>getAction("/sys/role/queryTreeList",params);
 const queryListAsync = (params)=>getAction("/sys/permission/queryListAsync",params);
 const queryRolePermission = (params)=>getAction("/sys/permission/queryRolePermission",params);
-const saveRolePermission = (params)=>postAction("/sys/permission/saveRolePermission",params);
+const saveRolePermission = (params)=>postAction("/sys/role/saveRolePermission",params);
 //const queryPermissionsByUser = (params)=>getAction("/sys/permission/queryByUser",params);
 const queryPermissionsByUser = (params)=>getAction("/sys/menu/getUserPermissionByToken",params);
 const loadAllRoleIds = (params)=>getAction("/sys/permission/loadAllRoleIds",params);
 const getPermissionRuleList = (params)=>getAction("/sys/permission/getPermRuleListByPermId",params);
 const queryPermissionRule = (params)=>getAction("/sys/permission/queryPermissionRule",params);
 
-// 部门管理
-const queryDepartTreeList = (params)=>getAction("/sysdepart/sysDepart/queryTreeList",params);
+// 单位管理
+export const queryUnitTreeList = (params)=>getAction("/sys/unit/list",params);
 const queryIdTree = (params)=>getAction("/sysdepart/sysDepart/queryIdTree",params);
 const queryParentName   = (params)=>getAction("/sysdepart/sysDepart/queryParentName",params);
 const searchByKeywords   = (params)=>getAction("/sysdepart/sysDepart/searchBy",params);

@@ -40,7 +40,7 @@
       min: 0,
       max: 100
     }, {
-      dataKey: 'user',
+      dataKey: 'index.vue',
       alias: '类型'
     }
   ]

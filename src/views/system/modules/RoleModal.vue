@@ -23,16 +23,54 @@
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          label="角色编码">
-          <a-input placeholder="请输入角色编码" :disabled="roleDisabled" v-decorator="[ 'roleCode', validatorRules.roleCode]" />
+          label="上级角色">
+            <a-tree-select
+              style="width: 300px"
+              :treeData="treeData"
+              :value="value"
+              @change="onChangeRole"
+              treeCheckable
+              :showCheckedStrategy="SHOW_PARENT"
+              searchPlaceholder='Please select'
+            />
         </a-form-item>
 
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          label="描述">
-          <a-textarea :rows="5" placeholder="..." v-decorator="[ 'description', {} ]" />
+          label="是否启用">
+            <a-radio-group   v-decorator="['radio-group']">
+              <a-radio value="1" >
+                是
+              </a-radio>
+              <a-radio value="0">
+                否
+              </a-radio>
+            </a-radio-group>
         </a-form-item>
+
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="是否安全锁定">
+          <a-radio-group   v-decorator="['radio-group']">
+            <a-radio value="0" >
+              否
+            </a-radio>
+            <a-radio value="1">
+              是
+            </a-radio>
+          </a-radio-group>
+        </a-form-item>
+
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="备注信息">
+          <a-input placeholder="请输入备注信息" :disabled="roleDisabled" v-decorator="[ 'roleCode', validatorRules.roleCode]" />
+        </a-form-item>
+
+
 
       </a-form>
     </a-spin>
@@ -47,6 +85,7 @@
     name: "RoleModal",
     data () {
       return {
+        treeData:[],    //下拉树组建
         title:"操作",
         visible: false,
         roleDisabled: false,
@@ -74,6 +113,10 @@
     created () {
     },
     methods: {
+      onChangeRole(){//选择角色触发事件
+
+      },
+
       add () {
         this.edit({});
       },

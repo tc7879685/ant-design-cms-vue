@@ -166,7 +166,6 @@ export default {
     }
     const on = {
       select: obj => {
-        debugger
         this.selectedKeys = obj.selectedKeys
         this.$emit('select', obj)
       },
